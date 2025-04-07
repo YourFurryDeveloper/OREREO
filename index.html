@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Oreo Generator</title>
+    </head>
+
+    <style>
+        html {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        #oreopart {
+            display: block;
+            margin-right: auto;
+            margin-left: auto;
+            margin-top: -5px;
+        }
+
+        #topbuttons {
+            display: flex;
+            margin-right: auto;
+            margin-left: auto;
+            justify-content: center;
+        }
+
+        #topbutton {
+            margin: 5px;
+        }
+
+        #toptopbutton {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #oreo-container {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: fit-content;
+        }
+    </style>
+
+    <body>
+        <h1>Oreo Generator</h1>
+        <h2 id="oreocount">Current Oreo:</h2>
+        <h2 id="oreonum"></h2>
+        <button id="toptopbutton" onclick=generateImg()>Share Oreo Image</button>
+        <button id="toptopbutton" style="margin-top: 5px;" onclick=window.location.href="https://orereo.puter.com">Clear Oreo</button>
+        <br>
+        <div id="topbuttons">
+            <button id="topbutton" onclick=addOTop()>O Top</button>
+            <button id="topbutton" onclick=addRe()>Re</button>
+            <button id="topbutton" onclick=addOBottom()>O Bottom</button>
+        </div>
+        <br>
+        <div id="oreo-container">
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script>
+            let oreoConfig = "";
+
+            function addOTop() {
+                const parentDiv = document.getElementById("oreo-container");
+                const newOreoPart = document.createElement("img");
+                newOreoPart.id = "oreopart";
+                newOreoPart.src = "o_top.png";
+                parentDiv.appendChild(newOreoPart);
+                oreoConfig = oreoConfig + "O";
+                document.getElementById("oreocount").innerHTML = "Current Oreo: " + oreoConfig;
+                addParam();
+            }
+
+            function addRe() {
+                const parentDiv = document.getElementById("oreo-container");
+                const newOreoPart = document.createElement("img");
+                newOreoPart.id = "oreopart";
+                newOreoPart.src = "re.png";
+                parentDiv.appendChild(newOreoPart);
+                oreoConfig = oreoConfig + "re";
+                document.getElementById("oreocount").innerHTML = "Current Oreo: " + oreoConfig;
+                addParam();
+            }
+
+            function addOBottom() {
+                const parentDiv = document.getElementById("oreo-container");
+                const newOreoPart = document.createElement("img");
+                newOreoPart.id = "oreopart";
+                newOreoPart.src = "o_bottom.png";
+                parentDiv.appendChild(newOreoPart);
+                oreoConfig = oreoConfig + "o";
+                document.getElementById("oreocount").innerHTML = "Current Oreo: " + oreoConfig;
+                addParam();
+            }
+
+            function addParam() {
+                const url = new URL(window.location.href);
+                const params = new URLSearchParams(url.search);
+                params.set('o', oreoConfig);
+                url.search = params.toString();
+                window.history.pushState({}, '', url.toString());
+            }
+
+            function checkParams() {
+                const queryString = window.location.search;
+                const urlParams = new URLSearchParams(queryString);
+                if (queryString.length > 0) {
+                    const paramValue = urlParams.get('o');
+                    loadOreo(paramValue);
+                }
+            }
+
+            function loadOreo(oreoConfig) {
+                splitConfig = oreoConfig.split("");
+                for (char in splitConfig) {
+                    console.log(splitConfig[char]);
+                    if (splitConfig[char] === "O") {
+                        const parentDiv = document.getElementById("oreo-container");
+                        const newOreoPart = document.createElement("img");
+                        newOreoPart.id = "oreopart";
+                        newOreoPart.src = "o_top.png";
+                        parentDiv.appendChild(newOreoPart);
+                        oreoConfig = oreoConfig + "o";
+                        document.getElementById("oreocount").innerHTML = "Current Oreo: " + oreoConfig;
+                    } else if (splitConfig[char] === "r") {
+                        const parentDiv = document.getElementById("oreo-container");
+                        const newOreoPart = document.createElement("img");
+                        newOreoPart.id = "oreopart";
+                        newOreoPart.src = "re.png";
+                        parentDiv.appendChild(newOreoPart);
+                        oreoConfig = oreoConfig + "o";
+                        document.getElementById("oreocount").innerHTML = "Current Oreo: " + oreoConfig;
+                    } else if (splitConfig[char] === "o") {
+                        const parentDiv = document.getElementById("oreo-container");
+                        const newOreoPart = document.createElement("img");
+                        newOreoPart.id = "oreopart";
+                        newOreoPart.src = "o_bottom.png";
+                        parentDiv.appendChild(newOreoPart);
+                        oreoConfig = oreoConfig + "o";
+                        document.getElementById("oreocount").innerHTML = "Current Oreo: " + oreoConfig;
+                    }
+                }
+            }
+
+            function generateImg() {
+                html2canvas(document.getElementById("oreo-container")).then(function(canvas) {
+                    var link = document.createElement('a');
+                    link.href = canvas.toDataURL();
+                    link.download = "generated_oreo.png";
+                    link.click();
+                });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                checkParams();
+                console.log(":3");
+            });
+        </script>
+    </body>
+</html>
